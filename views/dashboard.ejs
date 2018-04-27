@@ -63,10 +63,13 @@
                 var answer = response.data.totalCorrectAnswer;
                 if(answer <= 5) {
                     alert('Total Correct Answer are '+ answer + '. Bad Luck! Try Again');
-                } else if(answer <= 5 && answer >= 9){
+                    location.reload();
+                } else if(answer >= 5 && answer <= 9){
                     alert('Total Correct Answer are '+ answer + '. Good Job! You can try Again');
+                    location.reload();
                 } else if(answer == 10) {
                     alert('10/10. Good Try!');
+                    location.reload();
                 }
             }).error(function(response){
                 alert(response.message);
@@ -77,7 +80,7 @@
             var txt;
             var message = confirm("Are you sure want to Reset your Test?");
             if (message == true) {
-                $(':radio').removeAttr('checked')
+                $(':radio').removeAttr('checked');
             }            
         }
     </script>

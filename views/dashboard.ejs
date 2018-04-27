@@ -1,0 +1,84 @@
+<%- include header %>
+<div class="container">
+        <div class="header clearfix">                      
+            <h3 class="text-muted">Welcome to Crowdbotics Quiz</h3>    
+        </div>    
+        <br/>         
+        <div class="row">
+            <div class="col-lg-12" style="min-height: 400px;"> 
+                <% for(var i=0; i < data.length; i++){ %>
+                    (<%= data[i].id %>)
+                    <%= data[i].question %>
+                    <br/>
+                    <%= data[i].answer_id %>
+                    <br/>      
+                    <% for(j=0; j < data[i].optionDetails.length; j++) { %>                                                 
+                        <%= data[i].optionDetails[j].answer_id %>. &nbsp; &nbsp;
+                        <input type="radio" name="answer<%= i %>" id="answer<%= i %>" value="<%= data[i].optionDetails[j].answer_id %>"> <%= data[i].optionDetails[j].answer %>
+                        <br/>
+                    <% } %>
+                    <br/>                    
+                    <br/>        
+                    <hr/>
+                <% } %>
+                <br/>
+                <button onClick="javascript:submitResult();" class="btn btn-primary">Submit</button>
+                <button onClick="javascript:reset();" class="btn btn-danger">Reset Test</button>
+            </div>
+        </div>
+    </div>
+                
+    <script type="text/javascript">
+        var totalQuestion = <%= data.length %>;
+
+        function submitResult(){ 
+            var answerArray = [],   answerValue;                 
+            
+            for(var i = 0; i < totalQuestion; i++){                    
+                var radioButtons = document.getElementsByName('answer'+i);
+                for (var x = 0; x < radioButtons.length; x ++) {
+                    if (radioButtons[x].checked) {  
+                        answerValue =  radioButtons[x].value; 
+                        answerArray.push({
+                            "question_id": i+1,
+                            "answer" : answerValue
+                        });                                                               
+                    }
+                }                   
+            }
+            
+            if(answerArray.length != 10) {
+                alert("All Questions are mandatory!");
+                return;
+            }
+            
+            $.ajax({					
+                type:'POST',
+                url:path+'submitResult',
+                dataType: "json",	
+                data:{
+                    answerArray: answerArray
+                }		
+            }).success(function(response){
+                var answer = response.data.totalCorrectAnswer;
+                if(answer <= 5) {
+                    alert('Total Correct Answer are '+ answer + '. Bad Luck! Try Again');
+                } else if(answer <= 5 && answer >= 9){
+                    alert('Total Correct Answer are '+ answer + '. Good Job! You can try Again');
+                } else if(answer == 10) {
+                    alert('10/10. Good Try!');
+                }
+            }).error(function(response){
+                alert(response.message);
+            })
+        }
+
+        function reset() {
+            var txt;
+            var message = confirm("Are you sure want to Reset your Test?");
+            if (message == true) {
+                $(':radio').removeAttr('checked')
+            }            
+        }
+    </script>
+<%- include footer %>

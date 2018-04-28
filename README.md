@@ -11,19 +11,36 @@ Download database viewer: http://sqlitebrowser.org/ to check Sqlite3 db in deskt
 --------------------------------------------------------------------------------------------------------
 Database Structure:
 
-1. mst_user:
-CREATE TABLE "mst_user" ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `score` INTEGER NOT NULL DEFAULT 0, `last_try` TEXT, `total_try` INTEGER DEFAULT 0, `created_at` TEXT )
+All the querys are mentioned in this file : quiz/util/constants.js
 
+1. mst_user:
+	Create Table : 
+		CREATE TABLE "mst_user" ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `name` TEXT NOT NULL, `email` TEXT NOT NULL, `score` INTEGER NOT NULL DEFAULT 0, `last_try` TEXT, `total_try` INTEGER DEFAULT 0, `created_at` TEXT )
+	
+	Insert Data:
+		SAVE_USER_INFO: "INSERT INTO mst_user(name, email, created_at) VALUES (?,?,?)",
+	
 2. mst_questions
-CREATE TABLE "mst_questions" ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `question` TEXT NOT NULL, `answer_id` INTEGER, `score` INTEGER NOT NULL )
+	Create Table : 
+		CREATE TABLE "mst_questions" ( `id` INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, `question` TEXT NOT NULL, `answer_id` INTEGER, `score` INTEGER NOT NULL )
 
 3. question_options_mapping
-CREATE TABLE "question_options_mapping" ( `question_id` INTEGER NOT NULL, `answer_id` INTEGER NOT NULL, `answer` TEXT )
+	CREATE TABLE "question_options_mapping" ( `question_id` INTEGER NOT NULL, `answer_id` INTEGER NOT NULL, `answer` TEXT )
 
 --------------------------------------------------------------------------------------------------------
-Start a code
+Setup program
 
-To start in new machine
+1. Download program in a folder
+2. Go to folder
+3. Type npm install (install all required modules mentioned in package.json)
+4. Once Install is done start node main.js
+5. Open browser and open a page localhost:80 (Server is running on port 80)
 
-1. npm install (install all required modules mentioned in package.json)
-2. node main.js
+--------------------------------------------------------------------------------------------------------
+Deploy code on AWS
+
+1.	Create an EC2 Instance(Linux System)
+2.	Login with SSH with Instance IP
+3.	Upload a Node JS folder and install Node Module and sqlite3 (npm install sqlite3)
+4. 	Start with node main.js
+5.  Open EC2 Instance URL in Browser : ip:80
